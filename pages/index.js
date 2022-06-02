@@ -1,14 +1,14 @@
 import { css } from '@emotion/react';
+import { motion } from 'framer-motion';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import butfirst from '../public/butfirst.jpg';
-import coffeeplant from '../public/coffeeplant.jpg';
-import latteart from '../public/latteart.jpg';
+import galaxy from '../public/galaxy.jpg';
+import galaxy2 from '../public/galaxy2.jpg';
 
 const frontPageDiv = css`
   flex-direction: row;
-  background-color: black;
+  background-color: white;
   justify-content: space-between;
   align-items: center;
   width: 100%;
@@ -16,7 +16,8 @@ const frontPageDiv = css`
   padding: 0 10%;
   display: flex;
   h1 {
-    color: white;
+    padding-top: 50px;
+    color: Black;
     height: 18rem;
     max-width: fit-content;
     font-size: 10rem;
@@ -26,7 +27,7 @@ const frontPageDiv = css`
   }
 
   p {
-    color: white;
+    color: black;
     font-size: 20px;
     margin-left: 1000px;
     margin-top: -280px;
@@ -35,42 +36,104 @@ const frontPageDiv = css`
 
 const coffeeplantImgDiv = css`
   display: flex;
-  height: auto;
+  height: 270px;
   width: auto;
+  flex-wrap: nowrap;
+  justify-content: space-between;
   align-items: center;
-  justify-content: space-evenly;
-  padding-right: 207px;
-
+  background-color: white;
   .paragraphCoffeeplant {
-    font-size: 25px;
-    width: 50%;
+    margin-top: 0;
+    /* width: 50vw; */
+    padding: 0 10%;
+    color: black;
   }
-
-  .coffeeplant {
-    width: 500px;
+  #img {
+    filter: brightness(1.7);
+    height: auto;
   }
 `;
 const latteartImg = css`
   display: flex;
-  height: auto;
+  height: 450px;
   width: auto;
+  flex-wrap: nowrap;
+  justify-content: space-between;
   align-items: center;
-  justify-content: space-evenly;
-  padding-left: 208px;
-  margin-top: -5px;
+  background-color: white;
 
   .paragraphlatteart {
-    font-size: 25px;
-    width: 50%;
+    margin-top: 0;
+    /* width: 50vw; */
+    padding: 0 10%;
+    color: black;
   }
-  .latteartImg {
-    width: 500px;
+  #img2 {
+    filter: brightness(1.2);
+    height: auto;
   }
 `;
 
+const contactParagraph = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: auto;
+  height: 400px;
+  flex-direction: column;
+
+  p {
+    font-size: 30px;
+    padding: 40px;
+  }
+  button {
+    cursor: pointer;
+    border-radius: 10rem;
+    height: 57px;
+    width: 12rem;
+    font-size: 19px;
+    font-weight: 20;
+    border-color: grey;
+    background-color: black;
+    color: white;
+    border-style: solid;
+    border-width: 1px;
+  }
+`;
+
+const easing = [0.6, -0.05, 0.01, 0.99];
+
+const fadeInUp = {
+  initial: {
+    y: -20,
+    opacity: 0,
+  },
+  animate: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      duration: 1.8,
+      ease: easing,
+    },
+  },
+};
+
+const stagger = {
+  animate: {
+    transition: {
+      staggerChildren: 0.8,
+    },
+  },
+};
+
 export default function Home() {
   return (
-    <div>
+    <motion.div
+      onDragEnter={{ opacity: 0 }}
+      initial="initial"
+      animate="animate"
+      variants={fadeInUp}
+    >
       <Head>
         <title>Coffee Club</title>
         <meta name="description" content="E-Commerce Store" />
@@ -78,20 +141,16 @@ export default function Home() {
       </Head>
 
       <main>
-        <br />
-        <br />
-        <br />
-
-        <div css={frontPageDiv}>
-          <div>
+        <motion.div variants={stagger} css={frontPageDiv}>
+          <motion.div variants={fadeInUp}>
             <h1>Coffee </h1>
             <h1>Club</h1>
 
             <div id="paragraph">
               <p>Full-Service and High Quality Products</p>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         <div css={coffeeplantImgDiv}>
           <div className="paragraphCoffeeplant">
@@ -104,13 +163,13 @@ export default function Home() {
           </div>
 
           <div className="coffeeplant">
-            <Image id="img" src={coffeeplant} alt="coffeeplant" />
+            <Image id="img" src={galaxy} alt="coffeeplant" />
           </div>
         </div>
 
         <div css={latteartImg}>
           <div className="latteartImg">
-            <Image src={latteart} alt="latteart" />
+            <Image id="img2" src={galaxy2} alt="latteart" />
           </div>
           <div className="paragraphlatteart">
             <p>
@@ -120,7 +179,11 @@ export default function Home() {
             </p>
           </div>
         </div>
+        <div css={contactParagraph}>
+          <p> Lets's talk about Coffee</p>
+          <button>Contact us</button>
+        </div>
       </main>
-    </div>
+    </motion.div>
   );
 }

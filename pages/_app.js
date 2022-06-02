@@ -1,4 +1,5 @@
 import { css, Global } from '@emotion/react';
+import { AnimatePresence } from 'framer-motion';
 import Layout from '../Components/Layout';
 
 function MyApp({ Component, pageProps }) {
@@ -11,12 +12,12 @@ function MyApp({ Component, pageProps }) {
             padding: 0;
             margin: 0;
             font-family: 'Montserrat', sans-serif;
-            background-color: black;
-            color: white;
+            background-color: white;
+            color: black;
           }
 
           a {
-            color: White;
+            color: black;
             text-decoration: none;
           }
 
@@ -29,11 +30,14 @@ function MyApp({ Component, pageProps }) {
           background-color: red;
         `}
       />{' '}
-      <Layout>
-        {}
-        {/* <hr /> */}
-        <Component {...pageProps} />
-      </Layout>
+      <AnimatePresence exitBeforeEnter>
+        <Layout>
+          {}
+          {/* <hr /> */}
+
+          <Component {...pageProps} />
+        </Layout>
+      </AnimatePresence>
     </>
   );
 }
