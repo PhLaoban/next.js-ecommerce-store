@@ -6,7 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { getParsedCookie, setStringifiedCookie } from '../../util/cookies';
-import { coffeeDatabase } from '../../util/database';
+import { getSingleCoffee } from '../../util/database';
 
 const singleProduct = css`
   display: flex;
@@ -198,7 +198,7 @@ export default function Coffeeshop(props) {
                 ...currentCart,
                 {
                   id: props.coffee.id,
-                  name: props.coffee.name,
+
                   itemQuantity: selectedQuantity,
                 },
               ];
@@ -215,13 +215,11 @@ export default function Coffeeshop(props) {
   );
 }
 
-export function getServerSideProps(context) {
+export async function getServerSideProps(context) {
   console.log(context.req.cookies.cart);
 
   // 2.get the id from the url and use it to match the single coffee id
-  const coffees = coffeeDatabase.find((coffee) => {
-    return coffee.id === context.query.coffeeshopId;
-  });
+  const coffees = await getSingleCoffee(context.query.coffeeshopId);
 
   if (!coffees) {
     context.res.StatusCode = 404;

@@ -12,7 +12,7 @@ function MyApp({ Component, pageProps }) {
             padding: 0;
             margin: 0;
             font-family: 'Montserrat', sans-serif;
-            background-color: white;
+            /* background-color: white; */
             color: black;
           }
 
@@ -27,7 +27,7 @@ function MyApp({ Component, pageProps }) {
         `}
         const
         divStyle={css`
-          background-color: red;
+          /* background-color: red; */
         `}
       />{' '}
       <AnimatePresence exitBeforeEnter>

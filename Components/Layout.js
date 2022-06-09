@@ -1,5 +1,3 @@
-import { css } from '@emotion/react';
-import Link from 'next/link';
 import Footer from './Footer';
 import Header from './Header';
 
@@ -8,7 +6,8 @@ export default function Layout(props) {
     <div>
       <Header />
       {props.children}
-      <Footer />
+      <div> </div>
+      {/* <Footer /> */}
     </div>
   );
 }

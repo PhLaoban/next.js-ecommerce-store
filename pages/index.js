@@ -3,6 +3,10 @@ import { motion } from 'framer-motion';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useEffect, useRef, useState } from 'react';
+import * as THREE from 'three';
+import NET from 'vanta/dist/vanta.net.min';
+import Footer from '../Components/Footer';
 import galaxy from '../public/galaxy.jpg';
 import galaxy2 from '../public/galaxy2.jpg';
 
@@ -17,20 +21,24 @@ const frontPageDiv = css`
   display: flex;
   h1 {
     padding-top: 50px;
-    color: Black;
+    color: #123b61;
     height: 18rem;
     max-width: fit-content;
     font-size: 10rem;
     line-height: 10rem;
     white-space: pre-line;
     margin-top: -150px;
+    font-weight: 400;
+    opacity: 0.5;
   }
 
   p {
-    color: black;
+    color: #123b61;
     font-size: 20px;
     margin-left: 1000px;
     margin-top: -280px;
+    font-weight: 600;
+    opacity: 0.9;
   }
 `;
 
@@ -50,7 +58,8 @@ const coffeeplantImgDiv = css`
   }
   #img {
     filter: brightness(1.7);
-    height: auto;
+    height: 200px;
+    width: auto;
   }
 `;
 const latteartImg = css`
@@ -127,6 +136,34 @@ const stagger = {
 };
 
 export default function Home() {
+  const [vantaEffect, setVantaEffect] = useState(0);
+  const vantaRef = useRef(null);
+
+  useEffect(() => {
+    if (!vantaEffect) {
+      setVantaEffect(
+        NET({
+          el: vantaRef.current,
+          THREE: THREE,
+          mouseControls: true,
+          touchControls: true,
+          gyroControls: false,
+          minHeight: 200.0,
+          minWidth: 200.0,
+          scale: 1.0,
+          scaleMobile: 1.0,
+          color: 0x15446e,
+          backgroundColor: '#e8e8e8',
+          points: 11.0,
+          maxDistance: 17.0,
+          // backgroundAlpha: 0,
+        }),
+      );
+    }
+    return () => {
+      if (vantaEffect) vantaEffect.destroy();
+    };
+  }, [vantaEffect]);
   return (
     <motion.div
       onDragEnter={{ opacity: 0 }}
@@ -141,8 +178,11 @@ export default function Home() {
       </Head>
 
       <main>
-        <motion.div variants={stagger} css={frontPageDiv}>
+        <motion.div ref={vantaRef} variants={stagger} css={frontPageDiv}>
           <motion.div variants={fadeInUp}>
+            <script src="three.r119.min.js" />
+            <script src="vanta.net.min.js" />
+
             <h1>Coffee </h1>
             <h1>Club</h1>
 
@@ -181,8 +221,11 @@ export default function Home() {
         </div>
         <div css={contactParagraph}>
           <p> Lets's talk about Coffee</p>
-          <button>Contact us</button>
+          <Link href="/contact">
+            <button>Contact us</button>
+          </Link>
         </div>
+        <Footer />
       </main>
     </motion.div>
   );

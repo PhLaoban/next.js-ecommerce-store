@@ -1,9 +1,9 @@
 import { css } from '@emotion/react';
-import { animate, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import { coffeeDatabase } from '../util/database';
+import { getCoffees } from '../util/database';
 
 const imagesDiv = css`
   display: grid;
@@ -159,11 +159,11 @@ const headline = css`
       #a7489b 83.333%
     );
 
-    /* Set thee background size and repeat properties. */
+    // background size settings
+
     background-size: 57%;
     background-repeat: repeat;
 
-    /* Use the text as a mask for the background. */
     /* This will show the gradient as a text color rather than element bg. */
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -213,6 +213,13 @@ const headline = css`
       background-position: 0 0;
     }
   }
+  p {
+    font-size: 20px;
+    font-style: inherit;
+    letter-spacing: 2px;
+    padding: 50px;
+    color: grey;
+  }
 `;
 
 export default function Shop(props) {
@@ -230,6 +237,13 @@ export default function Shop(props) {
       </Head>
       <div css={headline}>
         <h1>BUY YOUR COFFEE ONLINE</h1>
+
+        <p>
+          Different regions, the various types of harvesting and processing of
+          raw beans, millions of possible blending ratios and the method of
+          roasting lead to an almost endless variety of flavors and types of
+          quality.
+        </p>
       </div>
       <motion.div variants={stagger} css={imagesDiv}>
         {props.coffees.map((coffee) => {
@@ -258,13 +272,17 @@ export default function Shop(props) {
   );
 }
 
-export function getServerSideProps() {
+export async function getServerSideProps() {
+  const coffees = await getCoffees();
+
+  console.log(coffees);
+
   return {
     // Anything that you pass in the props
     // object will get passed to the component
     // at the top in the `props` parameter
     props: {
-      coffees: coffeeDatabase,
+      coffees: coffees,
     },
   };
 }

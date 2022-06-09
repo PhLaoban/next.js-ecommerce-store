@@ -12,7 +12,6 @@ const footerstyles = css`
   align-items: center;
   margin-left: auto;
   margin-right: auto;
-
   font-size: 20px;
 `;
 

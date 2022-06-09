@@ -1,5 +1,4 @@
 import { css } from '@emotion/react';
-import Image from 'next/image';
 import Link from 'next/link';
 
 const headerStyles = css`
