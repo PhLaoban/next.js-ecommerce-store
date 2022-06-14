@@ -4,7 +4,7 @@ import Link from 'next/link';
 const headerStyles = css`
   display: flex;
   justify-content: space-between;
-  background-color: white;
+  background-color: transparent;
   height: 50px;
   max-width: 1300px;
   align-items: center;
@@ -36,7 +36,7 @@ export default function Header() {
         <Link href="/">Home</Link>
       </div>
       <div css={rotationHeader}>
-        <Link href="/about">Shopping Cart</Link>
+        <Link href="/about">Shopping Cart 🛒</Link>
       </div>
     </header>
   );

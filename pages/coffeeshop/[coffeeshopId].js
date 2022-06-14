@@ -16,6 +16,30 @@ const singleProduct = css`
   margin: auto;
   justify-content: center;
   background-color: white;
+
+  .add {
+    padding: 6px;
+    margin: 8px 16px;
+    height: 24px;
+    width: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* border: 1px solid #282828; */
+    cursor: pointer;
+    margin-top: 50px;
+    margin-bottom: 30px;
+
+    &:hover {
+      transition: 1 ease;
+      border-bottom: 1px solid #333;
+      border-color: black;
+    }
+    &:active {
+      transform: translateX(2px) translateY(-2.5px);
+    }
+  }
 `;
 
 const imgStyle = css`
@@ -48,23 +72,6 @@ const divButton = css`
   justify-content: center;
   align-items: center;
 `;
-const nextButton = css`
-  border-radius: 20px;
-  background-color: white;
-  color: black;
-  border-style: solid;
-  border-color: white;
-  text-decoration: underline;
-  text-decoration-color: black;
-
-  &:hover {
-    background-color: #ddd;
-    color: black;
-    transition: 0.4s ease-in-out;
-    opacity: 0.8;
-    transform: scale(1.05);
-  }
-`;
 
 const itemDescription = css`
   display: flex;
@@ -73,38 +80,98 @@ const itemDescription = css`
   justify-content: space-between;
   flex-direction: column;
   color: black;
+
+  .nextPreviousDiv {
+    width: 500px;
+    height: fit-content;
+    display: flex;
+    flex-direction: row;
+    border-radius: 20px;
+    padding-bottom: 20px;
+    .nextPreviousButton {
+      font-size: 15px;
+      padding: 20px;
+      padding-right: 80px;
+      background-color: white;
+      color: black;
+      margin-left: -20px;
+      text-decoration: underline;
+      text-decoration-color: black;
+      -webkit-transition-duration: 0.4s; /* Safari */
+      transition-duration: 0.4s;
+      text-decoration: none;
+      overflow: hidden;
+      cursor: pointer;
+
+      &:hover {
+        transition: 0.4s ease-in-out;
+        opacity: 0.8;
+        transform: scale(1.05);
+      }
+      &:active {
+        transform: translateX(2px) translateY(-2.5px);
+      }
+    }
+  }
 `;
 
 const coffeeName = css`
   font-size: 25px;
   font-weight: 500;
+  border-bottom: 1px solid #333;
+  border-color: black;
 `;
 
-const buttonNext = css`
-  font-size: 12px;
-  margin-top: 20px;
-  width: fit-content;
+const buttonStyle = css`
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  height: 48px;
+  padding: 0 48px;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 0.06rem;
+  width: auto;
 
+  background: #2d89fa;
+  color: #fff;
+  margin-right: 24px;
   &:hover {
-    cursor: pointer;
-    box-shadow: 0px 0px 20px black(0);
-    transition: 0.4s ease-in-out;
-    opacity: 0.8;
+    transition: 0.9 ease-in-out;
+    background-color: #002ead;
+    /* transition: 0.7s; */
+  }
+  &:active {
+    transform: translateX(2px) translateY(-2.5px);
   }
 `;
-const buttonPrevious = css`
-  font-size: 12px;
-  width: fit-content;
-  display: flex;
-  margin-bottom: 20px;
-  width: 30px;
 
-  &:hover {
-    cursor: pointer;
-    box-shadow: 0px 0px 20px black(0);
-    transition: 0.4s ease-in-out;
-    opacity: 0.8;
-  }
+const inputField = css`
+  font-family: inherit;
+  width: 60%;
+  border: 0;
+  border-radius: 2px;
+  outline: 0;
+  padding-top: 30px;
+  font-size: 1.3rem;
+  /* color: $white; */
+  background-color: rgba(45, 137, 250, 0.3);
+  opacity: 0.5;
+  padding: 7px 0;
+  transition: border-color 0.2s;
+  /* background: transparent; */
+  /*
+  &::placeholder {
+    color: black;
+    opacity: 1.5;
+  } */
+
+  /* &:placeholder-shown ~ .form__label {
+    font-size: 1.3rem;
+    cursor: text;
+    top: 20px;
+  } */
 `;
 
 export default function Coffeeshop(props) {
@@ -113,7 +180,13 @@ export default function Coffeeshop(props) {
 
   const [selectedQuantity, setSelectedQuantity] = useState(1);
 
-  const link = parseInt(props.coffee.id);
+  // const handleSubmit = (event) => {
+  //   console.log('handleSubmit ran');
+  //   event.preventDefault(); // 👈️ prevent page refresh
+
+  //   // 👇️ clear all input values in the form
+  //   setSelectedQuantity('');
+  // };
 
   if (!props.coffee) {
     return (
@@ -149,25 +222,34 @@ export default function Coffeeshop(props) {
       </motion.div>
 
       <motion.div css={itemDescription} variants={fadeInUp}>
-        <Link id="previousButton" href={`/coffeeshop/${link - 1}`}>
-          <motion.div css={buttonPrevious}>Previous Item</motion.div>
-        </Link>
+        <div className="nextPreviousDiv">
+          <Link
+            id="previousButton"
+            href={`/coffeeshop/${Number(props.coffee.id) - 1}`}
+          >
+            <div className="nextPreviousButton"> Previous Item</div>
+          </Link>
+          <Link href={`/coffeeshop/${Number(props.coffee.id) + 1}`}>
+            <div className="nextPreviousButton">Next Item</div>
+          </Link>
+        </div>
         <div css={coffeeName}>
-          {props.coffee.name}: € {props.coffee.price}0
+          {props.coffee.name}: € {props.coffee.price}
         </div>
         <br />
         {props.coffee.description}
         <br /> {props.coffee.taste}
         <motion.div css={divButton}>
-          <Link css={nextButton} href={`/coffeeshop/${link + 1}`}>
-            <motion.div css={buttonNext}>Next Item</motion.div>
-          </Link>
+          <br />
         </motion.div>
         <br />
-        <br />
         <label>
-          Amount
+          Amount:
+          <br />
           <input
+            placeholder="0"
+            css={inputField}
+            value={selectedQuantity}
             onChange={(event) => {
               setSelectedQuantity(event.currentTarget.value);
             }}
@@ -175,41 +257,48 @@ export default function Coffeeshop(props) {
         </label>
         <br />
         <br />
-        <button
-          onClick={() => {
-            const currentCart = getParsedCookie('cart')
-              ? getParsedCookie('cart')
-              : [];
-            console.log('The cart is: ', currentCart);
-            console.log(currentCart.length);
+        <div>
+          <button
+            className="button"
+            css={buttonStyle}
+            onClick={() => {
+              const currentCart = getParsedCookie('cart')
+                ? getParsedCookie('cart')
+                : [];
+              console.log('The cart is: ', currentCart);
+              console.log(currentCart.length);
 
-            const selectedItem = currentCart.find(
-              (item) => item.id === props.coffee.id,
-            );
+              const selectedItem = currentCart.find(
+                (item) => item.id === props.coffee.id,
+              );
 
-            if (selectedItem) {
-              selectedItem.itemQuantity =
-                Number(selectedItem.itemQuantity) + Number(selectedQuantity);
-              console.log('The item is already in the cart, updating quantity');
-              console.log('carts now: ', currentCart);
-              setStringifiedCookie('cart', currentCart);
-            } else {
-              const updatedCart = [
-                ...currentCart,
-                {
-                  id: props.coffee.id,
+              if (selectedItem) {
+                selectedItem.itemQuantity =
+                  Number(selectedItem.itemQuantity) + Number(selectedQuantity);
+                console.log(
+                  'The item is already in the cart, updating quantity',
+                );
+                console.log('carts now: ', currentCart);
+                setStringifiedCookie('cart', currentCart);
+              } else {
+                const updatedCart = [
+                  ...currentCart,
+                  {
+                    id: props.coffee.id,
 
-                  itemQuantity: selectedQuantity,
-                },
-              ];
-              setStringifiedCookie('cart', updatedCart);
-              // props.setCartCounter(props.cartCounter + 1);
-              console.log('The cart is: ', updatedCart);
-            }
-          }}
-        >
-          Add to cart
-        </button>
+                    itemQuantity: selectedQuantity,
+                  },
+                ];
+                setStringifiedCookie('cart', updatedCart);
+                // props.setCartCounter(props.cartCounter + 1);
+                console.log('The cart is: ', updatedCart);
+              }
+              setSelectedQuantity(1);
+            }}
+          >
+            Add to cart
+          </button>
+        </div>
       </motion.div>
     </motion.div>
   );

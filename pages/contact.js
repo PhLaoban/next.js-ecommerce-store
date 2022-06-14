@@ -19,7 +19,7 @@ const mainDiv = css`
   }
 
   #imgDiv {
-    width: 1200px;
+    width: 1400px;
     height: auto;
     #img {
       border-radius: 10px;
@@ -36,7 +36,8 @@ const mainDiv = css`
     position: absolute;
     flex-direction: column;
     z-index: 2;
-    padding-right: 1100px;
+
+    padding-right: 1300px;
     h1 {
       opacity: 0.8;
     }
@@ -59,8 +60,9 @@ export default function About() {
       <div css={mainDiv}>
         <div id="headline">
           <h1>Contact us </h1>
-
-          <p>philippanton@coffeeclub.com Markhofgasse 19/24, 1030 Wien</p>
+          <a href="mailto:someone@yoursite.com">
+            <p>philippanton@coffeeclub.com Markhofgasse 19/24, 1030 Wien</p>
+          </a>
 
           <p>+4315689220</p>
         </div>

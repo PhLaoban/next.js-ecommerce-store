@@ -20,8 +20,9 @@ const frontPageDiv = css`
   padding: 0 10%;
   display: flex;
   h1 {
-    padding-top: 50px;
-    color: #123b61;
+    border-radius: 20px;
+    padding-top: 80px;
+    color: black;
     height: 18rem;
     max-width: fit-content;
     font-size: 10rem;
@@ -29,11 +30,25 @@ const frontPageDiv = css`
     white-space: pre-line;
     margin-top: -150px;
     font-weight: 400;
-    opacity: 0.5;
+    opacity: 0.9;
+    background: #ca4246;
+    background-color: black;
+    letter-spacing: 12px;
+    /* background: conic-gradient(#476098 50.333%, #a7489b 90.333%); */
+    background-size: 57%;
+    background-repeat: repeat;
+
+    /* This will show the gradient as a text color rather than element bg. */
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    /* Animate the text when loading the element. */
+    /* This animates it on page load and when hovering out. */
+    animation: rainbow-text-animation-rev 0.5s ease forwards;
   }
 
   p {
-    color: #123b61;
+    color: black;
     font-size: 20px;
     margin-left: 1000px;
     margin-top: -280px;
@@ -64,7 +79,7 @@ const coffeeplantImgDiv = css`
 `;
 const latteartImg = css`
   display: flex;
-  height: 450px;
+  height: 400px;
   width: auto;
   flex-wrap: nowrap;
   justify-content: space-between;
@@ -145,18 +160,14 @@ export default function Home() {
         NET({
           el: vantaRef.current,
           THREE: THREE,
-          mouseControls: true,
-          touchControls: true,
-          gyroControls: false,
           minHeight: 200.0,
           minWidth: 200.0,
           scale: 1.0,
           scaleMobile: 1.0,
-          color: 0x15446e,
-          backgroundColor: '#e8e8e8',
-          points: 11.0,
-          maxDistance: 17.0,
-          // backgroundAlpha: 0,
+          color: 0xc0c0c,
+          backgroundColor: 0xd2d2d2,
+          maxDistance: 16.0,
+          spacing: 18.0,
         }),
       );
     }
@@ -178,12 +189,15 @@ export default function Home() {
       </Head>
 
       <main>
-        <motion.div ref={vantaRef} variants={stagger} css={frontPageDiv}>
+        <motion.div variants={stagger} css={frontPageDiv}>
           <motion.div variants={fadeInUp}>
             <script src="three.r119.min.js" />
             <script src="vanta.net.min.js" />
 
             <h1>Coffee </h1>
+            <br />
+            <br />
+
             <h1>Club</h1>
 
             <div id="paragraph">
@@ -219,7 +233,7 @@ export default function Home() {
             </p>
           </div>
         </div>
-        <div css={contactParagraph}>
+        <div ref={vantaRef} css={contactParagraph}>
           <p> Lets's talk about Coffee</p>
           <Link href="/contact">
             <button>Contact us</button>

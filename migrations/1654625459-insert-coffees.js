@@ -22,7 +22,7 @@ const coffees = [
   },
   {
     name: 'Nocciola',
-    price: 1,
+    price: 10,
     description: '250gr, 70% Mexiko, 30% Tanzania',
     taste: 'Roasted Hazelnuts, Cocoa',
     image: '/../public/Nocciola.png',
