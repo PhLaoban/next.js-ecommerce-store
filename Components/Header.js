@@ -1,5 +1,7 @@
 import { css } from '@emotion/react';
+import { filterProps } from 'framer-motion';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 const headerStyles = css`
   display: flex;
@@ -25,7 +27,8 @@ const rotationHeader = css`
   }
 `;
 
-export default function Header() {
+export default function Header(props) {
+  console.log('props from header', props);
   return (
     <header css={headerStyles}>
       <div css={rotationHeader}>
@@ -36,7 +39,13 @@ export default function Header() {
         <Link href="/">Home</Link>
       </div>
       <div css={rotationHeader}>
-        <Link href="/about">Shopping Cart 🛒</Link>
+        <Link href="/about">
+          <div>Shopping Cart 🛒 {props.amount} </div>
+        </Link>
+
+        <Link href="/about">
+          <div> </div>
+        </Link>
       </div>
     </header>
   );

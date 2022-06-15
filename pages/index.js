@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import NET from 'vanta/dist/vanta.net.min';
 import Footer from '../Components/Footer';
+import Layout from '../Components/Layout';
 import galaxy from '../public/galaxy.jpg';
 import galaxy2 from '../public/galaxy2.jpg';
 
@@ -150,9 +151,11 @@ const stagger = {
   },
 };
 
-export default function Home() {
+export default function Home(props) {
   const [vantaEffect, setVantaEffect] = useState(0);
   const vantaRef = useRef(null);
+
+  console.log('props from index', props);
 
   useEffect(() => {
     if (!vantaEffect) {

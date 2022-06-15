@@ -4,7 +4,8 @@ import Cookies from 'js-cookie';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import Layout from '../../Components/Layout';
 import { getParsedCookie, setStringifiedCookie } from '../../util/cookies';
 import { getSingleCoffee } from '../../util/database';
 
@@ -97,7 +98,7 @@ const itemDescription = css`
       margin-left: -20px;
       text-decoration: underline;
       text-decoration-color: black;
-      -webkit-transition-duration: 0.4s; /* Safari */
+      -webkit-transition-duration: 0.4s;
       transition-duration: 0.4s;
       text-decoration: none;
       overflow: hidden;
@@ -140,7 +141,6 @@ const buttonStyle = css`
   &:hover {
     transition: 0.9 ease-in-out;
     background-color: #002ead;
-    /* transition: 0.7s; */
   }
   &:active {
     transform: translateX(2px) translateY(-2.5px);
@@ -179,7 +179,7 @@ export default function Coffeeshop(props) {
   // const { coffeeId } = router.query;
 
   const [selectedQuantity, setSelectedQuantity] = useState(1);
-
+  const amountInputField = useRef(null);
   // const handleSubmit = (event) => {
   //   console.log('handleSubmit ran');
   //   event.preventDefault(); // 👈️ prevent page refresh
@@ -280,6 +280,9 @@ export default function Coffeeshop(props) {
                 );
                 console.log('carts now: ', currentCart);
                 setStringifiedCookie('cart', currentCart);
+                props.setCartCounter(
+                  props.cartCounter + Number(selectedQuantity),
+                );
               } else {
                 const updatedCart = [
                   ...currentCart,
@@ -290,8 +293,11 @@ export default function Coffeeshop(props) {
                   },
                 ];
                 setStringifiedCookie('cart', updatedCart);
-                // props.setCartCounter(props.cartCounter + 1);
                 console.log('The cart is: ', updatedCart);
+
+                props.setCartCounter(
+                  props.cartCounter + Number(amountInputField.current?.value),
+                );
               }
               setSelectedQuantity(1);
             }}

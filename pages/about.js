@@ -2,9 +2,18 @@ import { css } from '@emotion/react';
 import Cookies from 'js-cookie';
 import Head from 'next/head';
 import Image from 'next/image';
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  createContext,
+  createRef,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+import Layout from '../Components/Layout';
 import { getParsedCookie, setStringifiedCookie } from '../util/cookies';
 import { getCoffees } from '../util/database';
+
+const cartContext = createContext();
 
 const buttonStyle = css`
   cursor: pointer;
@@ -202,10 +211,18 @@ const removeButton = css`
 `;
 
 export default function About(props) {
-  // console.log(props.currentCart);
-  // console.log(props.database);
-
   const [cart, setCart] = useState(props.currentCart);
+
+  const [items, setItems] = useState(
+    props.currentCart.reduce(
+      (prevValue, currentValue) => prevValue + currentValue.itemQuantity,
+      0,
+    ),
+  );
+
+  useEffect(() => {
+    localStorage.setItem('items', JSON.stringify(items));
+  }, [items]);
 
   // total amount
   const total = props.currentCart
@@ -216,28 +233,9 @@ export default function About(props) {
     )
     .toFixed(2);
 
-  // remove button function
+  // calculate total amount of items
 
-  async function removeItemFromCart(id) {
-    const currentCart = (await Cookies.get('cart'))
-      ? getParsedCookie('cart')
-      : [];
-    const productInCart = await currentCart.find(
-      (product) => product.id === id,
-    );
-    if (productInCart.cartCounter > 1) {
-      productInCart.cartCounter -= 1;
-    } else {
-      const removeIndex = await currentCart
-        .map(function (item) {
-          return item.id;
-        })
-        .indexOf(id);
-      currentCart.splice(removeIndex, 1);
-    }
-    setStringifiedCookie('cart', currentCart);
-    return currentCart;
-  }
+  const refs = useRef([createRef(), createRef()]);
 
   return (
     <div css={mainStyle}>
@@ -262,11 +260,9 @@ export default function About(props) {
         </div>
         {/* <hr /> */}
         <div>
-          {cart.map((product) => {
+          {cart.map((product, index) => {
             return (
               <div id="new" key={`productId-${product.id}`}>
-                {/* {product.image} */}
-                {/* <Image src={product.image} width={200} height={250} /> */}
                 <div id="imgDiv">
                   <Image
                     id="imgStyle"
@@ -283,39 +279,42 @@ export default function About(props) {
                     {product.description} <br />
                     <br />
                     {product.price}€
-                    {/* {props.cart.map((c) => {
-                      return <div key={c.id}>{c.itemQuantity}</div>;
-                    })} */}
                   </p>
                 </div>
                 <div className="quantity"> {product.itemQuantity} pcs</div>
 
                 <div className="removeDiv">
-                  <button
-                    onClick={() => {
-                      const newQuantity = product.itemQuantity + 1;
-
-                      const updatedArray = cart.map((t) =>
-                        t.id === cart.id
-                          ? { ...t, itemQuantity: newQuantity }
-                          : t,
-                      );
-                      setCart(updatedArray);
-                      // 1. get the cookie
-                      const currentCart = getParsedCookie('cart');
-                      // 2. get the product
-                      const currentProduct = currentCart.find(
-                        (coffeeInCart) => product.id === coffeeInCart.id,
-                      );
-                      // 3. update the quantity of products
-                      currentProduct.itemQuantity += 1;
-
-                      // 4. set the new cookie
-                      setStringifiedCookie('cart', currentCart);
+                  <input
+                    type="number"
+                    ref={refs.current[index]}
+                    min="1"
+                    max={props.database.find((item) => {
+                      return product.id === item.id;
+                    })}
+                    defaultValue={product.itemQuantity}
+                    onInput={(event) => {
+                      if (!event.currentTarget.validity.valid) {
+                        event.currentTarget.value = '';
+                      }
                     }}
-                  >
-                    +
-                  </button>{' '}
+                    onChange={(event) => {
+                      console.log(event);
+                      const updatedCart = cart.slice();
+                      updatedCart.find((item) => {
+                        return item.id === product.id;
+                      }).itemQuantity = Number(event.currentTarget.value);
+                      let newTotalNumberOfItems = 0;
+                      for (let i = 0; i < updatedCart.length; i++) {
+                        newTotalNumberOfItems += updatedCart[i].itemQuantity;
+                      }
+                      console.log(newTotalNumberOfItems);
+                      props.setCartCounter(newTotalNumberOfItems);
+                      console.log('updated cart state: ', updatedCart);
+                      setStringifiedCookie('cart', updatedCart);
+                      setCart(updatedCart);
+                    }}
+                  />
+
                   <form>
                     <button
                       css={removeButton}
@@ -344,13 +343,6 @@ export default function About(props) {
                         // 6. set the new cookie update after deleting
                         setStringifiedCookie('cart', updatedCart);
                       }}
-                      //   const updatedCart = cart.filter((item) => {
-                      //     return item.itemId !== product.itemId;
-                      //   });
-                      //   console.log('after filter: ', updatedCart);
-                      //   setStringifiedCookie('cart', updatedCart);
-                      //   setCart(updatedCart);
-                      // }}
                     >
                       {' '}
                       X
@@ -361,7 +353,6 @@ export default function About(props) {
                   {' '}
                   {product.itemQuantity * product.price}€
                 </div>
-                {/* </form> */}
               </div>
             );
           })}
@@ -391,6 +382,7 @@ export async function getServerSideProps(context) {
     props: {
       currentCart,
       cart,
+      database,
     },
   };
 }
