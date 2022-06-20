@@ -1,7 +1,5 @@
 import { css } from '@emotion/react';
-import Image from 'next/image';
 import Link from 'next/link';
-import icon from '../public/icon.png';
 
 const footerstyles = css`
   display: flex;

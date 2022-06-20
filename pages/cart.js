@@ -1,38 +1,31 @@
 import { css } from '@emotion/react';
-import Cookies from 'js-cookie';
+import { faBagShopping } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Head from 'next/head';
 import Image from 'next/image';
-import React, {
-  createContext,
-  createRef,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
-import Layout from '../Components/Layout';
+import Link from 'next/link';
+import React, { createRef, useRef, useState } from 'react';
 import { getParsedCookie, setStringifiedCookie } from '../util/cookies';
 import { getCoffees } from '../util/database';
-
-const cartContext = createContext();
 
 const buttonStyle = css`
   cursor: pointer;
   border: none;
-  border-radius: 8px;
-  height: 40px;
+  border-radius: 4px;
+  height: 45px;
   padding: 0 48px;
-  font-size: 14px;
+  font-size: 13px;
   text-transform: uppercase;
-  letter-spacing: 0.06rem;
+  letter-spacing: 0.05rem;
   width: 200px;
-  filter: brightness(1.7);
-  background: rgba(0, 46, 173, 0.4);
+  font-weight: 0;
+
+  background: rgba(0, 46, 173, 1);
   color: white;
   margin-right: 24px;
   &:hover {
     transition: 0.9 ease-in-out;
-    background-color: #002ead;
-    /* transition: 0.7s; */
+    background-color: rgba(255, 255, 255, 0.1);
   }
   &:active {
     transform: translateX(2px) translateY(-2.5px);
@@ -42,10 +35,6 @@ const checkout = css`
   width: auto;
   display: flex;
   justify-content: space-between;
-`;
-
-const main = css`
-  /* width: 1000px; */
 `;
 
 const headlineDiv = css`
@@ -171,6 +160,7 @@ const mainStyle = css`
   }
   .quantity {
     font-size: 15px;
+    padding-left: 70px;
   }
   .removeDiv {
     font-size: 12px;
@@ -180,7 +170,7 @@ const mainStyle = css`
     width: 295px;
     opacity: 0.8;
     /* padding-left: 100px; */
-    margin-right: -20px;
+    padding-right: 73px;
   }
   .price {
     font-size: 15px;
@@ -188,6 +178,7 @@ const mainStyle = css`
     width: 400px;
     flex-direction: row;
     justify-content: flex-end;
+    padding-right: 68px;
   }
 `;
 
@@ -203,26 +194,37 @@ const removeButton = css`
     transition: 0.9 ease-in-out;
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 10px;
-    /* transition: 0.7s; */
   }
   &:active {
     transform: translateX(1px) translateY(-1.8px);
   }
 `;
 
+const inputField = css`
+  font-family: inherit;
+  width: 30%;
+  border: 0;
+  border-radius: 2px;
+  outline: 0;
+  padding-top: 30px;
+  font-size: 1.3rem;
+  /* color: $white; */
+  background-color: #141b26;
+  opacity: 0.68;
+  padding: 7px 0;
+  transition: border-color 0.2s;
+  color: rgba(255, 255, 255, 2);
+  /* background: transparent; */
+
+  &:placeholder-shown ~ .form__label {
+    font-size: 1.3rem;
+    cursor: text;
+    top: 20px;
+  }
+`;
+
 export default function About(props) {
   const [cart, setCart] = useState(props.currentCart);
-
-  const [items, setItems] = useState(
-    props.currentCart.reduce(
-      (prevValue, currentValue) => prevValue + currentValue.itemQuantity,
-      0,
-    ),
-  );
-
-  useEffect(() => {
-    localStorage.setItem('items', JSON.stringify(items));
-  }, [items]);
 
   // total amount
   const total = props.currentCart
@@ -239,10 +241,16 @@ export default function About(props) {
 
   return (
     <div css={mainStyle}>
-      <Head> E-Commerce Store </Head>
-      <main css={main}>
+      <Head>
+        <title>Coffee Club</title>
+        <meta name="cart" content="cart page" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <main>
         <div css={headlineDiv}>
-          <h1>My Cart</h1>
+          <h1>
+            My Cart <FontAwesomeIcon icon={faBagShopping} />
+          </h1>
         </div>
         <div css={headline}>
           <div className="alignment">
@@ -281,10 +289,10 @@ export default function About(props) {
                     {product.price}€
                   </p>
                 </div>
-                <div className="quantity"> {product.itemQuantity} pcs</div>
-
-                <div className="removeDiv">
+                <div className="quantity">
+                  {' '}
                   <input
+                    css={inputField}
                     type="number"
                     ref={refs.current[index]}
                     min="1"
@@ -313,8 +321,11 @@ export default function About(props) {
                       setStringifiedCookie('cart', updatedCart);
                       setCart(updatedCart);
                     }}
-                  />
+                  />{' '}
+                  pcs
+                </div>
 
+                <div className="removeDiv">
                   <form>
                     <button
                       css={removeButton}
@@ -360,7 +371,9 @@ export default function About(props) {
         <br />
         <div css={checkout}>
           Total Amount: {total} €{' '}
-          <button css={buttonStyle}>Proceed to checkout</button>
+          <Link href="/checkout">
+            <button css={buttonStyle}>Proceed to checkout</button>
+          </Link>
         </div>
       </main>
     </div>

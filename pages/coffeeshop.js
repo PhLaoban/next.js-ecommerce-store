@@ -112,31 +112,6 @@ const imageStyle = css`
   }
 `;
 
-const easing = [0.6, -0.05, 0.01, 0.99];
-
-const fadeInUp = {
-  initial: {
-    y: 60,
-    opacity: 0,
-  },
-  animate: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      duration: 2,
-      ease: easing,
-    },
-  },
-};
-
-const stagger = {
-  animate: {
-    transition: {
-      staggerChildren: 0.3,
-    },
-  },
-};
-
 const headline = css`
   justify-content: center;
   padding: 50px;
@@ -221,15 +196,11 @@ const headline = css`
     color: grey;
   }
 `;
+const easing = [0.6, -0.05, 0.01, 0.99];
 
 export default function Shop(props) {
   return (
-    <motion.div
-      css={imagesDiv}
-      onDragEnter={{ opacity: 0 }}
-      initial="initial"
-      animate="animate"
-    >
+    <motion.div css={imagesDiv} initial="initial" animate="animate">
       {' '}
       <Head>
         <title>Coffee Club</title>
@@ -245,18 +216,24 @@ export default function Shop(props) {
           quality.
         </p>
       </div>
-      <motion.div variants={stagger} css={imagesDiv}>
+      <motion.div variants={props.stagger} css={imagesDiv}>
         {props.coffees.map((coffee) => {
           return (
-            <motion.div variants={fadeInUp} key={`coffee-${coffee.id}`}>
-              <Link href={`/coffeeshop/${coffee.id}`}>
-                <Image
-                  css={imageStyle}
-                  src={coffee.image}
-                  width="450"
-                  height="600"
-                />
+            <motion.div variants={props.fadeInUp} key={`coffee-${coffee.id}`}>
+              <Link
+                href={`/coffeeshop/${coffee.id}`}
+                key={`items-coffees-${coffee.id}`}
+              >
+                <div>
+                  <Image
+                    css={imageStyle}
+                    src={coffee.image}
+                    width="450"
+                    height="600"
+                  />
+                </div>
               </Link>
+
               <br />
               <div css={productNames}>
                 <Link href={`/coffeeshop/${coffee.id}`}>{coffee.name}</Link>
@@ -275,6 +252,29 @@ export default function Shop(props) {
 export async function getServerSideProps() {
   const coffees = await getCoffees();
 
+  const fadeInUp = {
+    initial: {
+      y: 60,
+      opacity: 0,
+    },
+    animate: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 2,
+        ease: easing,
+      },
+    },
+  };
+
+  const stagger = {
+    animate: {
+      transition: {
+        staggerChildren: 0.3,
+      },
+    },
+  };
+
   console.log(coffees);
 
   return {
@@ -283,6 +283,9 @@ export async function getServerSideProps() {
     // at the top in the `props` parameter
     props: {
       coffees: coffees,
+      stagger,
+      fadeInUp,
+      easing,
     },
   };
 }

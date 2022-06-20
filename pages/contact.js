@@ -1,8 +1,6 @@
 import { css } from '@emotion/react';
-import { motion } from 'framer-motion';
 import Head from 'next/head';
 import Image from 'next/image';
-import Link from 'next/link';
 import contact from '../public/contact.jpg';
 
 const mainDiv = css`
@@ -37,15 +35,12 @@ const mainDiv = css`
     flex-direction: column;
     z-index: 2;
 
-    padding-right: 1300px;
+    padding-right: 1100px;
     h1 {
-      opacity: 0.8;
     }
 
     p {
       font-size: 20px;
-      margin-bottom: 20px;
-      opacity: 0.7;
     }
   }
 `;
@@ -56,7 +51,11 @@ export default function About() {
 
   return (
     <div>
-      <Head>E-Commerce Store </Head>
+      <Head>
+        <title>Coffee Club</title>
+        <meta name="contact" content="contact page" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <div css={mainDiv}>
         <div id="headline">
           <h1>Contact us </h1>

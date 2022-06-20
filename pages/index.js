@@ -1,56 +1,40 @@
 import { css } from '@emotion/react';
 import { motion } from 'framer-motion';
 import Head from 'next/head';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
+import { useTypewriter } from 'react-simple-typewriter';
 import * as THREE from 'three';
 import NET from 'vanta/dist/vanta.net.min';
 import Footer from '../Components/Footer';
-import Layout from '../Components/Layout';
-import galaxy from '../public/galaxy.jpg';
-import galaxy2 from '../public/galaxy2.jpg';
 
 const frontPageDiv = css`
   flex-direction: row;
-  background-color: white;
+  background-color: #04090c;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  height: 80vh;
-  padding: 0 10%;
+  height: 82vh;
+  padding: 8%;
   display: flex;
   h1 {
-    border-radius: 20px;
-    padding-top: 80px;
-    color: black;
-    height: 18rem;
+    color: white;
+    height: 5rem;
     max-width: fit-content;
-    font-size: 10rem;
-    line-height: 10rem;
-    white-space: pre-line;
-    margin-top: -150px;
-    font-weight: 400;
-    opacity: 0.9;
-    background: #ca4246;
-    background-color: black;
+    font-size: 2rem;
+    font-weight: 100;
+
     letter-spacing: 12px;
-    /* background: conic-gradient(#476098 50.333%, #a7489b 90.333%); */
-    background-size: 57%;
-    background-repeat: repeat;
+  }
 
-    /* This will show the gradient as a text color rather than element bg. */
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-
-    /* Animate the text when loading the element. */
-    /* This animates it on page load and when hovering out. */
-    animation: rainbow-text-animation-rev 0.5s ease forwards;
+  #hello {
+    font-size: 2rem;
+    font-weight: 100;
   }
 
   p {
-    color: black;
-    font-size: 20px;
+    color: white;
+    font-size: 16px;
     margin-left: 1000px;
     margin-top: -280px;
     font-weight: 600;
@@ -58,44 +42,27 @@ const frontPageDiv = css`
   }
 `;
 
+const headlineDiv = css`
+  background-image: url('cups.jpg');
+
+  background-size: cover;
+  height: 580px;
+`;
+
 const coffeeplantImgDiv = css`
   display: flex;
-  height: 270px;
-  width: auto;
-  flex-wrap: nowrap;
-  justify-content: space-between;
+  min-height: 70vh;
+  max-width: 70%;
+
+  font-size: 22px;
+  justify-content: center;
   align-items: center;
   background-color: white;
   .paragraphCoffeeplant {
     margin-top: 0;
-    /* width: 50vw; */
-    padding: 0 10%;
-    color: black;
-  }
-  #img {
-    filter: brightness(1.7);
-    height: 200px;
-    width: auto;
-  }
-`;
-const latteartImg = css`
-  display: flex;
-  height: 400px;
-  width: auto;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  align-items: center;
-  background-color: white;
 
-  .paragraphlatteart {
-    margin-top: 0;
-    /* width: 50vw; */
     padding: 0 10%;
     color: black;
-  }
-  #img2 {
-    filter: brightness(1.2);
-    height: auto;
   }
 `;
 
@@ -143,19 +110,16 @@ const fadeInUp = {
   },
 };
 
-const stagger = {
-  animate: {
-    transition: {
-      staggerChildren: 0.8,
-    },
-  },
-};
-
-export default function Home(props) {
+export default function Home() {
   const [vantaEffect, setVantaEffect] = useState(0);
   const vantaRef = useRef(null);
 
-  console.log('props from index', props);
+  // function for typewriter effect
+
+  const { text } = useTypewriter({
+    words: ['Coffee', 'Club!'],
+    loop: {},
+  });
 
   useEffect(() => {
     if (!vantaEffect) {
@@ -167,10 +131,8 @@ export default function Home(props) {
           minWidth: 200.0,
           scale: 1.0,
           scaleMobile: 1.0,
-          color: 0xc0c0c,
-          backgroundColor: 0xd2d2d2,
-          maxDistance: 16.0,
-          spacing: 18.0,
+          color: 0x0,
+          backgroundColor: 0xffffff,
         }),
       );
     }
@@ -179,12 +141,7 @@ export default function Home(props) {
     };
   }, [vantaEffect]);
   return (
-    <motion.div
-      onDragEnter={{ opacity: 0 }}
-      initial="initial"
-      animate="animate"
-      variants={fadeInUp}
-    >
+    <motion.div initial="initial" animate="animate" variants={fadeInUp}>
       <Head>
         <title>Coffee Club</title>
         <meta name="description" content="E-Commerce Store" />
@@ -192,16 +149,15 @@ export default function Home(props) {
       </Head>
 
       <main>
-        <motion.div variants={stagger} css={frontPageDiv}>
-          <motion.div variants={fadeInUp}>
-            <script src="three.r119.min.js" />
-            <script src="vanta.net.min.js" />
+        <motion.div css={frontPageDiv}>
+          <motion.div css={headlineDiv} variants={fadeInUp}>
+            <h1 id="hello">Hello, </h1>
+            <h1 id="hello">Welcome to: </h1>
 
-            <h1>Coffee </h1>
             <br />
             <br />
 
-            <h1>Club</h1>
+            <h1> {text} </h1>
 
             <div id="paragraph">
               <p>Full-Service and High Quality Products</p>
@@ -220,20 +176,19 @@ export default function Home(props) {
           </div>
 
           <div className="coffeeplant">
-            <Image id="img" src={galaxy} alt="coffeeplant" />
+            {/* <Image
+              id="img"
+              src={galaxy}
+              alt="coffeeplant"
+              width={2400}
+              height={1080}
+            /> */}
           </div>
         </div>
 
-        <div css={latteartImg}>
+        <div>
           <div className="latteartImg">
-            <Image id="img2" src={galaxy2} alt="latteart" />
-          </div>
-          <div className="paragraphlatteart">
-            <p>
-              'Coffee Club' Coffee Roasters has been amongst the top coffee
-              roasters in Austria for the last few years. We source, roast,
-              supply and brew the top 5% of coffees from around the world.
-            </p>
+            {/* <Image id="img2" src={galaxy2} alt="latteart" /> */}
           </div>
         </div>
         <div ref={vantaRef} css={contactParagraph}>

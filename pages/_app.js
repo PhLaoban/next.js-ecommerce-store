@@ -1,29 +1,15 @@
+import '@fortawesome/fontawesome-svg-core/styles.css';
 import { css, Global } from '@emotion/react';
+import { config } from '@fortawesome/fontawesome-svg-core';
 import { AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import Layout from '../Components/Layout';
 import { getParsedCookie } from '../util/cookies';
 
+config.autoAddCss = false;
+
 function MyApp({ Component, pageProps }) {
   const [cartCounter, setCartCounter] = useState(0);
-  const [items, setItems] = useState();
-
-  // if (typeof window !== 'undefined') {
-  //   console.log('You are on the browser');
-  //   // 👉️ can use localStorage here
-
-  //   setItems(JSON.parse(localStorage.getItem('items')));
-  // }
-
-  useEffect(() => {
-    const cookie = getParsedCookie('cart');
-    let totalCartItems = 0;
-    for (let i = 0; i < cookie.length; i++) {
-      totalCartItems += Number(cookie[i].itemQuantity);
-    }
-    console.log('totalItems: ', totalCartItems);
-    setCartCounter(totalCartItems);
-  }, []);
 
   // I keep this here just in case...
   if (!pageProps) {
@@ -31,16 +17,16 @@ function MyApp({ Component, pageProps }) {
   }
 
   useEffect(() => {
-    const itemsData = localStorage.getItem('items');
-    if (items) {
-      setItems(itemsData);
-    }
-  }, []);
+    const cookie = getParsedCookie('cart') || [];
+    const totalCartItems = cookie.reduce(
+      (prevValue, currentValue) => prevValue + currentValue.itemQuantity,
+      0,
+    );
+    setCartCounter(Number(totalCartItems));
+  }, [cartCounter]);
 
   pageProps.cartCounter = cartCounter;
-  // pageProps.setItems = setItems;
 
-  // pageProps.totalItems = totalItems;
   pageProps.setCartCounter = setCartCounter;
 
   return (
@@ -66,15 +52,10 @@ function MyApp({ Component, pageProps }) {
           }
         `}
         const
-        divStyle={css`
-          /* background-color: red; */
-        `}
+        divStyle={css``}
       />{' '}
       <AnimatePresence exitBeforeEnter>
-        <Layout>
-          {}
-          {/* <hr /> */}
-
+        <Layout cartQuantity={Number(cartCounter)}>
           <Component {...pageProps} />
         </Layout>
       </AnimatePresence>

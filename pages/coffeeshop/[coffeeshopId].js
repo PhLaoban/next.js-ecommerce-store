@@ -1,11 +1,9 @@
 import { css } from '@emotion/react';
-import { animate, motion } from 'framer-motion';
-import Cookies from 'js-cookie';
+import { motion } from 'framer-motion';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRef, useState } from 'react';
-import Layout from '../../Components/Layout';
 import { getParsedCookie, setStringifiedCookie } from '../../util/cookies';
 import { getSingleCoffee } from '../../util/database';
 
@@ -89,13 +87,15 @@ const itemDescription = css`
     flex-direction: row;
     border-radius: 20px;
     padding-bottom: 20px;
+
     .nextPreviousButton {
       font-size: 15px;
       padding: 20px;
-      padding-right: 80px;
+      padding-right: 40px;
+      padding-left: -10px;
+
       background-color: white;
       color: black;
-      margin-left: -20px;
       text-decoration: underline;
       text-decoration-color: black;
       -webkit-transition-duration: 0.4s;
@@ -113,7 +113,44 @@ const itemDescription = css`
         transform: translateX(2px) translateY(-2.5px);
       }
     }
+    .previousButton {
+      font-size: 15px;
+      padding: 20px;
+      padding-right: 80px;
+      padding-left: 45px;
+      background-color: white;
+      color: black;
+      text-decoration: underline;
+      text-decoration-color: black;
+      -webkit-transition-duration: 0.4s;
+      transition-duration: 0.4s;
+      text-decoration: none;
+      overflow: hidden;
+      cursor: pointer;
+
+      &:hover {
+        transition: 0.4s ease-in-out;
+        opacity: 0.8;
+        transform: scale(1.05);
+      }
+      &:active {
+        transform: translateX(2px) translateY(-2.5px);
+      }
+    }
+
+    #nextArrow {
+      padding-top: 12.2px;
+      padding-right: 100px;
+      font-size: 25px;
+      color: blue;
+    }
   }
+`;
+
+const previousArrow = css`
+  padding-top: 12.2px;
+  font-size: 25px;
+  color: blue;
 `;
 
 const coffeeName = css`
@@ -186,6 +223,7 @@ export default function Coffeeshop(props) {
 
   //   // 👇️ clear all input values in the form
   //   setSelectedQuantity('');
+
   // };
 
   if (!props.coffee) {
@@ -205,12 +243,7 @@ export default function Coffeeshop(props) {
   }
 
   return (
-    <motion.div
-      onDragEnter={{ opacity: 0 }}
-      initial="initial"
-      animate="animate"
-      css={singleProduct}
-    >
+    <motion.div initial="initial" animate="animate" css={singleProduct}>
       <motion.div variants={fadeInUp}>
         <Image
           variants={fadeInUp}
@@ -223,15 +256,19 @@ export default function Coffeeshop(props) {
 
       <motion.div css={itemDescription} variants={fadeInUp}>
         <div className="nextPreviousDiv">
+          <div css={previousArrow}>◀ </div>
+          <br />
           <Link
             id="previousButton"
             href={`/coffeeshop/${Number(props.coffee.id) - 1}`}
           >
-            <div className="nextPreviousButton"> Previous Item</div>
+            <div className="previousButton"> Previous Item</div>
           </Link>
+
           <Link href={`/coffeeshop/${Number(props.coffee.id) + 1}`}>
             <div className="nextPreviousButton">Next Item</div>
           </Link>
+          <div id="nextArrow"> ▶</div>
         </div>
         <div css={coffeeName}>
           {props.coffee.name}: € {props.coffee.price}
