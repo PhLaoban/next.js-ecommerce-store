@@ -22,6 +22,7 @@
     "js-cookie": "^3.0.1",
     "ley": "^0.7.1",
     "next": "^12.2.3",
+    "pg-connection-string": "^2.5.0",
     "postgres": "^3.2.4",
     "react": "18.1.0",
     "react-dom": "18.1.0",
