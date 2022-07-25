@@ -223,7 +223,7 @@ const inputField = css`
   }
 `;
 
-export default function About(props) {
+export default function Cart(props) {
   const [cart, setCart] = useState(props.currentCart);
 
   // total amount

@@ -10,7 +10,6 @@ const headerStyles = css`
   align-items: center;
   margin-left: auto;
   margin-right: auto;
-
   color: black;
   font-size: 20px;
 `;

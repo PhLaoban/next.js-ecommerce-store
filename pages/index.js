@@ -11,17 +11,17 @@ import Footer from '../Components/Footer';
 const frontPageDiv = css`
   flex-direction: row;
   background-color: #04090c;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: center;
   width: 100%;
-  height: 82vh;
+  height: 80vh;
   padding: 8%;
   display: flex;
   h1 {
     color: white;
     height: 5rem;
     max-width: fit-content;
-    font-size: 2rem;
+    font-size: 3rem;
     font-weight: 100;
 
     letter-spacing: 12px;
@@ -44,15 +44,15 @@ const frontPageDiv = css`
 
 const headlineDiv = css`
   background-image: url('cups.jpg');
-
+  background-position: 100% 55%;
   background-size: cover;
-  height: 580px;
+  height: 80vh;
 `;
 
 const coffeeplantImgDiv = css`
   display: flex;
   min-height: 70vh;
-  max-width: 70%;
+  width: 100vw;
 
   font-size: 22px;
   justify-content: center;
@@ -60,8 +60,9 @@ const coffeeplantImgDiv = css`
   background-color: white;
   .paragraphCoffeeplant {
     margin-top: 0;
-
-    padding: 0 10%;
+    width: 60vw;
+    display: flex;
+    justify-content: center;
     color: black;
   }
 `;
@@ -174,23 +175,8 @@ export default function Home() {
               that we work
             </p>
           </div>
-
-          <div className="coffeeplant">
-            {/* <Image
-              id="img"
-              src={galaxy}
-              alt="coffeeplant"
-              width={2400}
-              height={1080}
-            /> */}
-          </div>
         </div>
 
-        <div>
-          <div className="latteartImg">
-            {/* <Image id="img2" src={galaxy2} alt="latteart" /> */}
-          </div>
-        </div>
         <div ref={vantaRef} css={contactParagraph}>
           <p> Lets's talk about Coffee</p>
           <Link href="/contact">

@@ -1,4 +1,4 @@
-import Header from './Header';
+import Header from './Head';
 
 export default function Layout(props) {
   console.log('props from layout', props);
@@ -8,8 +8,6 @@ export default function Layout(props) {
       <Header cartAmount={props.cartQuantity} />
 
       {props.children}
-
-      <div> </div>
     </div>
   );
 }

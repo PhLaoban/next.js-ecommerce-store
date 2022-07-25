@@ -348,10 +348,12 @@ export default function Coffeeshop(props) {
 }
 
 export async function getServerSideProps(context) {
-  console.log(context.req.cookies.cart);
+  console.log('context.req', context.req.cookies.cart);
 
   // 2.get the id from the url and use it to match the single coffee id
   const coffees = await getSingleCoffee(context.query.coffeeshopId);
+
+  console.log('context query', context.query.coffeeshopId);
 
   if (!coffees) {
     context.res.StatusCode = 404;
