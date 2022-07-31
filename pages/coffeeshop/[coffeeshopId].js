@@ -248,7 +248,7 @@ export default function Coffeeshop(props) {
         <Image
           variants={fadeInUp}
           css={imgStyle}
-          src={props.coffee.image}
+          src={`/images/${props.coffee.name}.webp`}
           width="450"
           height="600"
         />{' '}

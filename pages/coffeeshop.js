@@ -227,7 +227,7 @@ export default function Shop(props) {
                 <div>
                   <Image
                     css={imageStyle}
-                    src={coffee.image}
+                    src={`/images/${coffee.name}.webp`}
                     width="450"
                     height="600"
                   />
